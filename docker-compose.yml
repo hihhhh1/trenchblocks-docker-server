@@ -1,0 +1,56 @@
+services:
+  trenchblocks:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: trenchblocks_server
+    restart: unless-stopped
+    ports:
+      - "${SERVER_PORT:-7777}:${SERVER_PORT:-7777}/udp"
+      - "${QUERY_PORT:-27015}:${QUERY_PORT:-27015}/udp"
+    volumes:
+      - ./server_data:/home/steam/trenchblocks_server
+    environment:
+      # Steam & Engine Ports
+      - STEAM_APP_ID=4338960
+      - SERVER_PORT=7777
+      - QUERY_PORT=27015
+      - SERVER_ARGS=-log
+
+      # Core Server Settings
+      - SERVER_NAME=Trenchblocks Server
+      - MAX_PLAYERS=32
+      - MAX_PING=150
+      - MAX_GRENADES=2
+      - RESPAWN_TIME=5.000000
+      - SPAWN_PROTECTION_TIME=3.000000
+      - ROUND_TIME=1800.000000
+      - VAC_ENABLED=True
+      - GAMEMODE=TDM
+      - MOTD=Play fair.
+      - FRIENDLY_FIRE=False
+      - DESTRUCTION_ENABLED=True
+
+      # Teams
+      - TEAM_A_NAME=Red
+      - TEAM_B_NAME=Blue
+      - TEAM_A_COLOR=(R=1.000000,G=0.098958,B=0.098958,A=1.000000)
+      - TEAM_B_COLOR=(R=0.000000,G=0.347836,B=1.000000,A=1.000000)
+
+      # Map Rotation (comma-separated, e.g. builtin:Arena01,workshop:123456789)
+      - MAP_ROTATION=builtin:Arena01
+
+      # Security (comma-separated Steam IDs for admins)
+      - ADMIN_LIST=76561198965966997,76561198041113253
+      - SESSION_PASSWORD=
+
+      # Voice Chat Settings
+      - VOICE_CHAT_MODE=Proximity
+      - VOICE_MAX_HEARING_RANGE=5000.000000
+      - VOICE_MAX_CONCURRENT_GLOBAL_TALKERS=8
+      - VOICE_RELEVANCY_UPDATE_INTERVAL=0.200000
+
+      # Workshop Settings (optional)
+      - WORKSHOP_CONTENT_DEPOT_ID=0
+      - WORKSHOP_CONTENT_DIR=
+      - WORKSHOP_SEARCH_DIRS=
